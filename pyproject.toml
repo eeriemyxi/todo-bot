@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "bot"
+version = "0.1.0"
+description = "A basic todo bot for Discord meant to be self-hosted."
+authors = ["eeriemyxi <eeriemyxi@proton.me>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+hikari = "^2.0.0.dev121"
+hikari-tanjun = "^2.17.1"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.1.0"
+black = "^23.10.0"
+pre-commit = "^3.5.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
