@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import yaml
 from hikari import Intents
 
@@ -13,3 +15,7 @@ BOT_INTENTS = (
     | Intents.GUILD_MESSAGES
     | Intents.GUILD_MODERATION
 )
+BOT_DEFAULT_COMMAND_PREFIX = ""
+
+REGISTERED_TANJUN_EXTENSIONS: tuple[str, ...] = ("todo",)
+TANJUN_EXTENSIONS_DIRECTORY: Path = Path("bot/ext/tanjun")

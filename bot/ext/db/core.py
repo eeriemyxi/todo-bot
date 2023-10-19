@@ -58,7 +58,7 @@ class BaseDatabase:
             if file.name in self.SCRIPT_NAMES and self._conn:
                 async with aiofile.async_open(file, "r") as file_buf:
                     logger.info(
-                        "Executing script `%s` on `%s`",
+                        "Executing script `%s` on `%s`.",
                         file.name,
                         self.__class__.__name__,
                     )
