@@ -21,13 +21,13 @@ class BaseDatabase:
     SCRIPT_NAMES = ("setup.sql",)
 
     def __init__(self):
-        self._conn: aiosqlite.Connection | None = None
+        self.db: aiosqlite.Connection | None = None
         self.before_hooks: HookListType = []
         self.after_hooks: HookListType = [(self.load_scripts, ())]
 
     async def connect(self) -> None:
         await self.call_hooks(HookType.BEFORE_CONN)
-        self._conn = await aiosqlite.connect(".base_database.db")
+        self.db = await aiosqlite.connect(".base_database.db")
         await self.call_hooks(HookType.AFTER_CONN)
 
     async def call_hooks(
@@ -55,11 +55,11 @@ class BaseDatabase:
 
     async def load_scripts(self) -> None:
         for file in self.SCRIPT_PATH.glob("*.sql"):
-            if file.name in self.SCRIPT_NAMES and self._conn:
+            if self.db and file.name in self.SCRIPT_NAMES:
                 async with aiofile.async_open(file, "r") as file_buf:
                     logger.info(
                         "Executing script `%s` on `%s`.",
                         file.name,
                         self.__class__.__name__,
                     )
-                    await self._conn.executescript(await file_buf.read())
+                    await self.db.executescript(await file_buf.read())
