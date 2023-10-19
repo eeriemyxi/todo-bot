@@ -1,4 +1,5 @@
 import logging
+import typing as t
 from enum import Enum
 from pathlib import Path
 
@@ -6,6 +7,8 @@ import aiofile
 import aiosqlite
 
 logger = logging.getLogger(__name__)
+
+HookListType: t.TypeAlias = list[tuple[t.Callable[..., t.Awaitable], tuple[t.Any, ...]]]
 
 
 class HookType(Enum):
@@ -19,8 +22,8 @@ class BaseDatabase:
 
     def __init__(self):
         self._conn: aiosqlite.Connection | None = None
-        self.before_hooks = []
-        self.after_hooks = [(self.load_scripts, ())]
+        self.before_hooks: HookListType = []
+        self.after_hooks: HookListType = [(self.load_scripts, ())]
 
     async def connect(self) -> None:
         await self.call_hooks(HookType.BEFORE_CONN)
