@@ -1,3 +1,6 @@
+WORKDIR=.
+
 lint:
-	ruff check . --fix
-	pre-commit run --all-files
+	@black $(WORKDIR)
+	@ruff check $(WORKDIR) --fix
+	@pre-commit run --all-files

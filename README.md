@@ -1,3 +1,6 @@
+# Note
+This bot is under development. See the `dev` branch for latest changes.
+
 # Introduction
 A basic to-do bot for Discord. Supports GNU-style flags. Meant to be self-hosted and used by one individual person.
 
