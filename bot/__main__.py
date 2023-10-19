@@ -19,7 +19,7 @@ def main() -> None:
     (
         tanjun.Client.from_gateway_bot(bot)
         .add_prefix("")
-        .load_modules("bot.modules.todo")
+        .load_modules("bot.ext.tanjun.todo")
         .add_client_callback(tanjun.ClientCallbackNames.STARTING, database.connect)
     )
 
