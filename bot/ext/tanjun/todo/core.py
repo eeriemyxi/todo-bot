@@ -2,7 +2,7 @@ import pprint
 
 import tanjun
 
-from bot.ext.struct import (
+from bot.ext.tanjun.todo.struct import (
     AtKeyword,
     Day,
     DoKeyword,
@@ -36,13 +36,3 @@ async def command_todo(ctx: tanjun.abc.Context, content: str) -> None:
             break
 
     await ctx.respond(f"```py\n{pprint.pformat(tokens)}```")
-
-
-@tanjun.as_loader
-def load_module(client: tanjun.abc.Client) -> None:
-    client.add_component(component.copy())
-
-
-@tanjun.as_unloader
-def unload_module(client: tanjun.abc.Client) -> None:
-    client.remove_component_by_name(component.name)

@@ -20,8 +20,8 @@ def load_tanjun_extensions(
     mods: tuple[str, ...],
     mod_dir: Path,
 ) -> None:
-    for mod in mod_dir.glob("*.py"):
-        if mod.with_suffix("").name in mods:
+    for mod in mod_dir.iterdir():
+        if mod.stem in mods:
             client.load_modules(mod)
         else:
             logger.info(
