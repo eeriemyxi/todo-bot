@@ -1,38 +1,20 @@
+import logging
 import pprint
 
 import tanjun
 
-from bot.ext.tanjun.todo.struct import (
-    AtKeyword,
-    Day,
-    DoKeyword,
-    Time,
-    Token,
-    TokenType,
-    WhenKeyword,
-)
+from bot.ext.tanjun.todo.scanner import TokenScanner
 
+logger = logging.getLogger(__name__)
 component = tanjun.Component()
 
 
 @component.with_command
-@tanjun.with_greedy_argument("content")
 @tanjun.as_message_command("todo")
-async def command_todo(ctx: tanjun.abc.Context, content: str) -> None:
-    raw_tokens = content.casefold().split()
-    tokens = []
+async def command_todo(ctx: tanjun.abc.MessageContext) -> None:
+    logger.info("Todo command called: %s", repr(ctx.content))
 
-    for index, token in enumerate(raw_tokens):
-        if token == "when":
-            day = Day.TODAY if raw_tokens[index + 1] == "today" else Day.TOMORROW
-            tokens.append(Token(TokenType.WHEN, WhenKeyword(token, day)))
-        if token == "at":
-            hour, minute = (int(x.strip()) for x in raw_tokens[index + 1].split(":"))
-            time = Time(hour, minute)
-            tokens.append(Token(TokenType.AT, AtKeyword(token, time)))
-        if token == "do":
-            description = " ".join(raw_tokens[index + 1 :])
-            tokens.append(Token(TokenType.DO, DoKeyword(token, description)))
-            break
+    scanner = TokenScanner(ctx.content)
+    tokens = scanner.scan_tokens()
 
     await ctx.respond(f"```py\n{pprint.pformat(tokens)}```")

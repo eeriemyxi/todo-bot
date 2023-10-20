@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from enum import Enum, auto
+from typing import Any
 
-__all__ = ("Day", "Time", "WhenKeyword", "AtKeyword", "DoKeyword", "TokenType", "Token")
+__all__ = ("Day", "Time", "TokenType", "Token")
 
 
 class Day(Enum):
@@ -15,31 +16,20 @@ class Time:
     minute: int
 
 
-@dataclass
-class WhenKeyword:
-    literal: str
-    day: Day
-
-
-@dataclass
-class AtKeyword:
-    literal: str
-    time: Time
-
-
-@dataclass
-class DoKeyword:
-    literal: str
-    description: str
-
-
 class TokenType(Enum):
     WHEN = auto()
     AT = auto()
     DO = auto()
 
+    STRING = auto()
+    TIME = auto()
+
+    EOF = auto()
+
 
 @dataclass
 class Token:
     token_type: TokenType
-    data: WhenKeyword | AtKeyword | DoKeyword
+    literal: str
+    col: int
+    data: Any | None = None
