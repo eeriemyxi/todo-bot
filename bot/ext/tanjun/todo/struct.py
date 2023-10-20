@@ -31,5 +31,5 @@ class TokenType(Enum):
 class Token:
     token_type: TokenType
     literal: str
-    col: int
+    cols: tuple[int, int]
     data: Any | None = None

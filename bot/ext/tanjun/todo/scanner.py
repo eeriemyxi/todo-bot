@@ -37,7 +37,8 @@ class TokenScanner:
             self.token_end_col = self.cur_pos
             self.scan_token()
 
-        self.tokens.append(Token(TokenType.EOF, "", self.cur_pos))
+        self.token_start_col = self.token_end_col = self.cur_pos
+        self.tokens.append(Token(TokenType.EOF, "", self.cols))
 
         return self.tokens
 
@@ -80,13 +81,21 @@ class TokenScanner:
         self.tokens.append(Token(TokenType.STRING, string_value, self.cols))
 
     def handle_number(self) -> None:
-        while self.peek().isdigit() or self.peek().isspace():
+        while self.peek().isdigit():
+            self.advance()
+
+        # Two while loops instead of one,
+        # for logical simplicity.
+
+        while self.peek().isspace():
             self.advance()
 
         if self.peek() == ":":
             first_set_end = self.cur_pos
-
             self.advance()
+
+            while self.peek().isspace():
+                self.advance()
 
             while self.peek().isdigit():
                 self.advance()
